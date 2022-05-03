@@ -9,7 +9,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.collections4.CollectionUtils;
 import utility.Utils;
 
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +29,7 @@ public class Parser {
         List<Candidate> beforeList = beforeData.getCandidates();
         List<Candidate> afterList  = afterData.getCandidates();
 
+        // This part will collect intersection of the two Candidate list
         List<CandidateResult> editedList = beforeList
                 .stream()
                 .filter(before -> afterList
@@ -39,6 +40,7 @@ public class Parser {
                 .map(p -> new CandidateResult(p.getId()))
                 .collect(Collectors.toList());
 
+        // This part will collect difference between before and after Candidate list
         List<CandidateResult> removedList = CollectionUtils.subtract(
                         beforeList.stream().map(x -> x.getId()).collect(Collectors.toList()),
                         afterList.stream().map(x -> x.getId()).collect(Collectors.toList()))
@@ -46,6 +48,7 @@ public class Parser {
                 .map(p -> new CandidateResult((Long)p))
                 .toList();
 
+        // This part will collect difference between after and before Candidate list
         List<CandidateResult> addedList = CollectionUtils.subtract(
                         afterList.stream().map(x -> x.getId()).collect(Collectors.toList()),
                         beforeList.stream().map(x -> x.getId()).collect(Collectors.toList()))
@@ -56,8 +59,10 @@ public class Parser {
         Meta metaBefore = beforeData.getMeta();
         Meta metaAfter  = afterData.getMeta();
 
-
-        JsonArray metaJsonArray = gson.toJsonTree(Utils.getMetaList(metaBefore, metaAfter)).getAsJsonArray();
+        // This part will collect the Difference between two objects
+        JsonArray metaJsonArray = gson
+                .toJsonTree(Utils.getMetaList(metaBefore, metaAfter))
+                .getAsJsonArray();
 
         resultJson.add("meta", metaJsonArray);
 
@@ -67,6 +72,7 @@ public class Parser {
         JsonArray edited  = new JsonArray();
         JsonArray removed = new JsonArray();
 
+        // This part will collect Candidate list object to the separate list
         addedList  .stream().forEach( x ->  { added.add( gson.toJsonTree(x)); });
         editedList .stream().forEach( x ->  { edited.add( gson.toJsonTree(x)); });
         removedList.stream().forEach( x ->  { removed.add( gson.toJsonTree(x)); });

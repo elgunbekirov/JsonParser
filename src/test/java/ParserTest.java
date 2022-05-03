@@ -16,7 +16,7 @@ import java.io.InputStream;
 public class ParserTest {
 
     Parser parser = new Parser();
-    JsonParser joparser = new JsonParser();
+    JsonParser jsonParser = new JsonParser();
     StringBuilder beforeTxt = new StringBuilder();
     StringBuilder afterTxt = new StringBuilder();
     StringBuilder diffTxt = new StringBuilder();
@@ -42,14 +42,14 @@ public class ParserTest {
     @Test
     public void shouldBeEqual(){
         JsonObject actualResult = parser.parse(beforeTxt.toString(), afterTxt.toString());
-        Assert.assertEquals(joparser.parse(actualResult.toString()), joparser.parse(diffTxt.toString()));
+        Assert.assertEquals(jsonParser.parse(actualResult.toString()), jsonParser.parse(diffTxt.toString()));
     }
 
 
     @Test
     public void shouldNotBeEqual(){
         JsonObject actualResult = parser.parse(beforeTxt.toString(), afterTxt.toString());
-        Assert.assertNotEquals(joparser.parse(actualResult.toString()), joparser.parse( new JsonObject().toString()));
+        Assert.assertNotEquals(jsonParser.parse(actualResult.toString()), jsonParser.parse( new JsonObject().toString()));
     }
 
 }
