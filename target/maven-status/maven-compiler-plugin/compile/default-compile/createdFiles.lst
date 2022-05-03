@@ -1,0 +1,7 @@
+Main.class
+entity/Meta.class
+entity/Candidate.class
+Parser.class
+entity/DataEntity.class
+utility/Utils.class
+entity/result/CandidateResult.class
